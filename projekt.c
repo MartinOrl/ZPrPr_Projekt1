@@ -54,7 +54,7 @@ int checkFileIntegrity(){
             printf("\nSubor je prazdny! Ukoncujem funkciu!\n");
             return 0;
         }
-        rowSegment = strtok(row,";");
+        rowSegment = strtok(row,";,");
         segmentIndex = 0;
         segmentCount = 0;
         roundsCount = 0;
@@ -106,7 +106,7 @@ int checkFileIntegrity(){
                     }
                 }
             }
-            rowSegment = strtok(NULL, ";");
+            rowSegment = strtok(NULL, ";,");
         }
 
         if(segmentCount == 1){
@@ -135,7 +135,7 @@ void sum(){
 
     while(feof(fr) == 0){
         fgets(row, MAXCHAR, fr);
-        segment = strtok(row, ";");
+        segment = strtok(row, ";,");
         segmentHelperIndex = 0;
         while(segment != NULL){
             segmentHelperIndex++;
@@ -155,7 +155,7 @@ void sum(){
             if(segmentHelperIndex == 9){
                 printf("%.3f\n",(float)atof(segment));
             }
-            segment = strtok(NULL, ";");
+            segment = strtok(NULL, ";,");
         }
     }
     if(fclose(fr) == EOF) printf("Subor sa nepodarilo zatvorit\n");
@@ -182,13 +182,13 @@ void rmdriver(){
     }
     while(feof(fr) == 0){
         fgets(row, MAXCHAR, fr);
-        segment = strtok(row, ";");
+        segment = strtok(row, ";,");
         segmentHelperIndex = 0;
         while(segment != NULL){
             segmentHelperIndex++;
             if(segmentHelperIndex == 1 && !found){
                 last = strrchr(segment, 32);
-                if(strstr(last+1,name)){
+                if(!strcmp(last+1,name)){
                     found = 1;
                     globalFound = 1;
                     break;
@@ -203,7 +203,7 @@ void rmdriver(){
                 else if(segmentHelperIndex == 9) fprintf(fh,"%.3f",(float)atof(segment));
                 added++;
             }
-            segment = strtok(NULL, ";");
+            segment = strtok(NULL, ";,");
         }
         found = found ? 0 : found;
     }
@@ -234,7 +234,7 @@ void brand(){
     char row[MAXCHAR];
     char *segment;
     char name[64];
-    char bestBrandNames[4][64];
+    char bestBrandNames[4][64] = {"-","-","-","-"};
     float bestRounds[5];
     int bestRoundsIndexes[4];
     char brands[4][8] = {"ferrari","bugatti","porsche","honda"};
@@ -244,7 +244,7 @@ void brand(){
 
     while(feof(fr) == 0){
         fgets(row, MAXCHAR, fr);
-        segment = strtok(row, ";");
+        segment = strtok(row, ";,");
         segmentHelperIndex = 0;
         while(segment != NULL){
             segmentHelperIndex++;
@@ -271,15 +271,15 @@ void brand(){
                 }
                 
             }
-            segment = strtok(NULL, ";");
+            segment = strtok(NULL, ";,");
         }
     }
     for(int i = 0; i < 4; i++){
         if(i > 0) printf("\n\n");
         printf("Znacka: %s\n", brands[i]);
-        printf("Najlepsie kolo: %.3f\n", bestRounds[i]);
-        printf("Jazdec: %s\n", bestBrandNames[i]);
-        printf("Cislo kola: %d", bestRoundsIndexes[i]);
+        printf("Najlepsie kolo: %.3f\n", !bestRounds[i] ? 0 : bestRounds[i]);
+        printf("Jazdec: %s\n", !bestBrandNames[i] ? "-" : bestBrandNames[i]);
+        printf("Cislo kola: %d", !bestRoundsIndexes[i] ? 0 : bestRoundsIndexes[i]);
     }
 
     if(fclose(fr) == EOF)printf("Subor sa nepodarilo zatvorit\n");
@@ -300,7 +300,7 @@ void lap(){
 
     while(feof(fr) == 0){
         fgets(row, MAXCHAR, fr);
-        segment = strtok(row, ";");
+        segment = strtok(row, ";,");
         segmentHelperIndex = 0;
         while(segment != NULL){
             segmentHelperIndex++;
@@ -316,7 +316,7 @@ void lap(){
                     strcpy(bestName, name);
                 }
             }
-            segment = strtok(NULL, ";");
+            segment = strtok(NULL, ";,");
         }
     }
     printf("Najlepsie kolo: %.3f\nJazdec: %s\nCislo kola: %d\n", bestRound, bestName, bestRoundNum);
@@ -343,13 +343,13 @@ void driver(){
 
     while(feof(fr) == 0){
         fgets(row, MAXCHAR, fr);
-        segment = strtok(row, ";");
+        segment = strtok(row, ";,");
         segmentHelperIndex = 0;
         while(segment != NULL){
             segmentHelperIndex++;
             if(segmentHelperIndex == 1){
                 last = strrchr(segment, 32);
-                if(strstr(last+1,name)){ 
+                if(!strcmp(last+1,name)){ 
                     found = 1;
                 }
             }
@@ -380,7 +380,7 @@ void driver(){
                     }
                 }
             }
-            segment = strtok(NULL, ";");
+            segment = strtok(NULL, ";,");
         }
         if(found) break;
     }
@@ -405,11 +405,12 @@ void under(){
 
     if(!scanf(" %f", &roundLimit) && roundLimit <= 0.0){
         printf("Zadany neplatny cas, alebo zly format! Ukoncujem funkciu!");
+        while(getchar() != '\n');
         return;
     }
     while(feof(fr) == 0){
         fgets(row, MAXCHAR, fr);
-        segment = strtok(row, ";");
+        segment = strtok(row, ";,");
         segmentHelperIndex = 0;
         tempRoundIndex = 0;
         underRounds[0] = 0;
@@ -424,7 +425,7 @@ void under(){
                     tempRoundIndex++;
                 }
             }
-            segment = strtok(NULL, ";");
+            segment = strtok(NULL, ";,");
         }
         if(underRounds[0]){
             printf("%s - %d %s,",name,tempRoundIndex, tempRoundIndex != 1 && tempRoundIndex != 5 ? "kola" : "kol");
@@ -454,13 +455,13 @@ void average(){
 
     while(feof(fr) == 0){
         fgets(row, MAXCHAR, fr);
-        segment = strtok(row, ";");
+        segment = strtok(row, ";,");
         segmentHelperIndex = 0;
         while(segment != NULL){
             segmentHelperIndex++;
             if(segmentHelperIndex == 1) strcpy(name, segment);
             if(segmentHelperIndex > 4) averageRound += ((float)atof(segment) / 5.0);
-            segment = strtok(NULL, ";");
+            segment = strtok(NULL, ";,");
 
         }
         if(!bestRound){
@@ -494,13 +495,13 @@ void gender(){
     char driverGender;
     printf("Zadaj pohlavie (m - muz; f - zena): ");
 
-    if(!scanf(" %c", &gender)){
+    if(!scanf(" %c", &gender) || (gender != 'f' && gender != 'm')){
         printf("Zadane zle pohlavie. Ukoncujem funkciu!");
         return;
     }
     while(feof(fr) == 0){
         fgets(row, MAXCHAR, fr);
-        segment = strtok(row, ";");
+        segment = strtok(row, ";,");
         segmentHelperIndex = 0;
     
         while(segment != NULL){
@@ -522,7 +523,7 @@ void gender(){
                     }
                 }
             }
-            segment = strtok(NULL, ";");
+            segment = strtok(NULL, ";,");
         }
     }
     
@@ -542,28 +543,28 @@ void newdriver(){
     char name[64];
     char brand[64];
     char gender[32];
-    int year;
-    
+    int year = 0;
     char *roundsToken;
     int index = 0;
     float rounds[5];
+    int fix = 0;
     char temp[16];
     printf("Zadaj cele meno jazdca: ");
     scanf(" %[^\n]", name);
-    printf("Zadaj rok narodenia: ");
-    scanf("%d", &year);
-    printf("Zadaj pohlavie (m - muz; f - zena): ");
-    scanf("%s", gender);
-    printf("Zadaj znacku vozidla (ferrari, porsche, bugatti, honda): ");
-    scanf("%s", brand);
-    printf("Zadaj casy kol (format: round1;round2;round3;round4;round5): ");
-    scanf("%s", helper);
-
-    if(strcmp("bugatti",brand) && strcmp("ferrari",brand) && strcmp("honda",brand) && strcmp("porsche",brand)){
-        printf("Nebola zadana spravna znacka! Ukoncujem funkciu!");
+    if(!strstr(name, " ")){
+        printf("Meno neobsahuje medzeru! Ukoncujem funkciu!");
         return;
     }
-
+    printf("Zadaj rok narodenia: ");
+    scanf("%d", &year);
+    while(getchar() != '\n');
+    if(!year || year < 1000){
+        printf("Neplatny rok! Ukoncujem funkciu!");
+        return;
+    }
+    printf("Zadaj pohlavie (m - muz; f - zena): ");
+    scanf("%s", gender);
+    while(getchar() != '\n');
     if(strlen(gender) > 1){
         printf("Do pohlavia bolo zadanych viacero znakov, beriem len prvy znak!\n");
     }
@@ -571,28 +572,49 @@ void newdriver(){
         printf("Neplatne pohlavie. Ukoncujem funkciu!");
         return;
     }
-
+    printf("Zadaj znacku vozidla (ferrari, porsche, bugatti, honda): ");
+    scanf("%s", brand);
+    while(getchar() != '\n');
+    if(strcmp("bugatti",brand) && strcmp("ferrari",brand) && strcmp("honda",brand) && strcmp("porsche",brand)){
+        printf("Nebola zadana spravna znacka! Ukoncujem funkciu!");
+        return;
+    }
+    
+    printf("Zadaj casy kol (format: round1;round2;round3;round4;round5): ");
+    scanf("%s", helper);
+    while(getchar() != '\n'){
+        if(fix == 1) printf("Neplatny vstup! Ukoncujem funkciu!");
+        fix++;
+    }
     int semicolonCount = 0;
     // Checking for rounds count
-    for(int i = 0; i < 64; i++){
+    for(int i = 0; i < strlen(helper); i++){
         if(helper[i] == 44){ 
             printf("Najdena chyba pri nacitanych casoch. Napísal si , namiesto ;! Opravený cas kol jazdca %s\n", name);
             helper[i] = ';';
+            continue;
         }
-        if(helper[i] == 59) semicolonCount += 1;
+        if(helper[i] == 59){
+            semicolonCount++;
+            continue;
+        }
+        if(helper[i] == 46) continue;
+        if(!(helper[i] > 47 && helper[i] < 58)){
+            printf("Neplatny vstup! Ukoncujem funkciu!");
+            return;
+        }
     }
-
     if(semicolonCount == 4){
-        roundsToken = strtok(helper,";");
+        roundsToken = strtok(helper,";,");
         while(roundsToken != NULL){
             strcpy(temp, roundsToken);
             rounds[index] = (float)atof(temp);
-            roundsToken = strtok(NULL, ";");
+            roundsToken = strtok(NULL, ";,");
             index++;
         }
         fprintf(fw, "\n%s;%c;%d;%s;%.3f;%.3f;%.3f;%.3f;%.3f",name, gender[0], year, brand, rounds[0],rounds[1],rounds[2],rounds[3],rounds[4]);
     } else {
-        printf("Nedostatok kol! Ukoncujem funkciu!");
+        printf("Zly pocet kol! Ukoncujem funkciu!");
         return;
     }
     
@@ -637,13 +659,13 @@ void change(){
     }
     while(feof(fr) == 0){
         fgets(row, MAXCHAR, fr);
-        segment = strtok(row, ";");
+        segment = strtok(row, ";,");
         segmentHelperIndex = 0;
         while(segment != NULL){
             segmentHelperIndex++;
             if(segmentHelperIndex == 1 && !found){
                 last = strrchr(segment, 32);
-                if(strstr(last+1,name)){
+                if(!strcmp(last+1,name)){
                     found = 1;
                     globalFound = 1;
                 }
@@ -672,7 +694,7 @@ void change(){
                 added++;
 
             }
-            segment = strtok(NULL, ";");
+            segment = strtok(NULL, ";,");
         }
         found = found ? 0 : found;
     }
@@ -717,12 +739,13 @@ void year(){
     printf("Zadaj rok vo formate YYYY: ");
     if(!scanf(" %d", &yearLimiter) && year < 1000){
         printf("Nebol zadany spravny format, alebo bol zadany zly typ. Ukoncujem funkciu!");
+        while(getchar() != '\n');
         return;
     }
 
     while(feof(fr) == 0){
         fgets(row, MAXCHAR, fr);
-        segment = strtok(row, ";");
+        segment = strtok(row, ";,");
         segmentHelperIndex = 0;
      
         while(segment != NULL){
@@ -758,7 +781,7 @@ void year(){
                     }
                 }
             }
-            segment = strtok(NULL, ";");
+            segment = strtok(NULL, ";,");
         }
     }
     if(bestYear) printf("\n%s\nnar. %d\nNajlepsie kolo: %.3f\nCislo kola: %d",bestName,bestYear,bestRound,bestRoundNum);

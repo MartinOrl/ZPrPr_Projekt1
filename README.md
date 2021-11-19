@@ -40,7 +40,7 @@ Táto funkcia skopíruje string z ORIGINU do DESTINATION, a vráti daný string
 ## Pomocný opis niektorých funkcií
 
 ### Pomocné funkcie
-`int checkIntegrity()`
+`int checkFileIntegrity()`
 >Prejde každý riadok súboru a ak je niekde chyba vo formátovaní súboru, tak ju označí, vypíše a vráti premennú `integrityStatus = 0`, ktorá ukončí program.
 Táto funkcia nedovolí spustiť program, pokiaľ nie je formát riadkov v poriadku.
 Pri nájdení chyby, zavolá funkciu `getSegmentError()`, do ktorej vloží argumenty pozície riadku, segmentu a nájdeného neplatného stringu
