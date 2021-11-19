@@ -178,6 +178,7 @@ void rmdriver(){
     printf("Zadaj priezvisko jazdca: ");
     if(!scanf(" %s", name)){
         printf("Priezvisko nebolo zadané správne. Ukončujem funkciu!");
+        while(getchar() != '\n');
         return;
     }
     while(feof(fr) == 0){
@@ -339,7 +340,11 @@ void driver(){
     int found = 0;
 
     printf("Zadaj priezvisko jazdca: ");
-    scanf(" %s", name);
+    if(!scanf(" %s", name)){
+        printf("Priezvisko nebolo zadané správne. Ukončujem funkciu!");
+        while(getchar() != '\n');
+        return;
+    }
 
     while(feof(fr) == 0){
         fgets(row, MAXCHAR, fr);
@@ -497,6 +502,7 @@ void gender(){
 
     if(!scanf(" %c", &gender) || (gender != 'f' && gender != 'm')){
         printf("Zadane zle pohlavie. Ukoncujem funkciu!");
+        while(getchar() != '\n');
         return;
     }
     while(feof(fr) == 0){
@@ -586,6 +592,9 @@ void newdriver(){
         if(fix == 1) printf("Neplatny vstup! Ukoncujem funkciu!");
         fix++;
     }
+    if(fix){
+        return;
+    }
     int semicolonCount = 0;
     // Checking for rounds count
     for(int i = 0; i < strlen(helper); i++){
@@ -643,18 +652,30 @@ void change(){
     int added = 0;
     
     printf("Zadaj priezvisko jazdca: ");
-    if(!scanf(" %s", name)){
-        printf("Priezvisko nebolo zadane spravne. Ukoncujem funkciu!"); 
+    if(!scanf(" %s", name) || !(name[0] > 65 && name[0] < 91)){
+        printf("Priezvisko nebolo zadane spravne. Ukoncujem funkciu!");
+        while(getchar() != '\n');
         return;
     }
+    while(getchar() != '\n');
+    for(int i = 0; i < strlen(name); i++){
+        if(!(name[i] > 64 && name[i] < 91) && !(name[i] > 96 && name[i] < 123)){
+            printf("Priezvisko obsahuje neplatny charakter! Ukoncujem funkciu!");
+            while(getchar() != '\n');
+            return;
+        }
+    }
+    
     printf("Zadaj cislo kola: ");
     if(!scanf("%d", &targetRound) || targetRound > 5 || targetRound < 1){
-        printf("Bolo zadane zle cislo kola, alebo zly format. Ukoncujem funkciu!"); 
+        printf("Bolo zadane zle cislo kola, alebo zly format. Ukoncujem funkciu!");
+        while(getchar() != '\n');
         return;
     }
     printf("Zadaj novy cas vo formate CC.CCC : ");
     if(!scanf("%f", &newRound) || newRound <= 0){
         printf("Bol zadany neplatny novy cas, alebo zly format. Ukoncujem funkciu!"); 
+        while(getchar() != '\n');
         return;
     }
     while(feof(fr) == 0){
