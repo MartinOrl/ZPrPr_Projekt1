@@ -53,7 +53,7 @@ Pri nájdení chyby, zavolá funkciu `getSegmentError()`, do ktorej vloží argu
 >Funkcia si postupne načíta riadky, tie následnde rozdelí na segmenty. Z prvého segmentu si získa priezvisko, ktoré porovná so vstupom. Ak sa zhodujú, zmení hodnotu premenných `int found` a `int globalFound`  na hodnotu `1`. `int found` určuje, či sa našiel a po každom riadku sa resetne. `int globalFound` určuje či sa vôbec niekto našiel. Následne funkcia do pomocného súboru prepíše údaje všetkých jazdcov okrem nájdeného. Ak už niekoho pridalo, funkcia do súboru vpíše aj `\n`, aby každý jazdec bol na novom riadkU. Následne prepíše obsah pomocného súboru do súboru tabulka.csv
 
 `void brand()`
->Funkcia zapisuje do premenných hodnoti najlepších kôl značiek. Každá značka má svoj index. Ferrari je 0, Buggati je 1, Porsche je 2, Honda je 3. Podľa toho si funkcia porovnáva kolá len s tými z jej značky. Ak najde lepšie kolo, prepíše meno jazdca a poradie kola. Následne vytlačí sumárny výpis pre každú značku.
+>Funkcia zapisuje do premenných hodnoti najlepších kôl značiek. Každá značka má svoj index. Ferrari je 0, Bugatti je 1, Porsche je 2, Honda je 3. Podľa toho si funkcia porovnáva kolá len s tými z jej značky. Ak najde lepšie kolo, prepíše meno jazdca a poradie kola. Následne vytlačí sumárny výpis pre každú značku.
 
 `void driver()`
 >Funkcia pracuje na rovnakom princípe ako `void rmdriver()`, až na to že namiesto vymazania jazdca ho vypíše do konzoly
