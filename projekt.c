@@ -8,23 +8,23 @@ void getSegmentError(int segmentIndex, int rowIndex, char resultString[128]){
     switch (segmentIndex)
     {
     case 1:
-        printf("Found error in row %d. Expected name format of \"NAME SURNAME\", instead saw %s\n",rowIndex, resultString);
+        printf("Chyba najdena v riadku %d. Ocakavany format mena \"MENO PRIEZVISKO\", namiesto toho vyslo %s\n",rowIndex, resultString);
         break;
     case 2:
-        printf("Found error in row %d. Expected gender format of f or m, instead saw %s\n",rowIndex, resultString);
+        printf("Chyba najdena v riadku %d. Ocakavany format pohlavia f alebo m, namiesto toho vyslo %s\n",rowIndex, resultString);
         break;
     case 3:
-        printf("Found error in row %d. Expected year of birth format of YYYY, instead saw %s\n",rowIndex, resultString);
+        printf("Chyba najdena v riadku %d. Ocakavany format roku RRRR, namiesto toho vyslo %s\n",rowIndex, resultString);
         break;
     case 4:
-        printf("Found error in row %d. Expected brand name from array [porsche, bugatti, honda, ferrari], instead saw %s\n",rowIndex, resultString);
+        printf("Chyba najdena v riadku %d. Ocakavana znacka z pola [porsche, bugatti, honda, ferrari], namiesto toho vyslo %s\n",rowIndex, resultString);
         break;
     case 5:
     case 6:
     case 7:
     case 8:
     case 9:
-        printf("Found error in row %d. Expected 5 rounds in format r1;r2;r3;r4;r5 . Instead saw \"%s\"\n",rowIndex, resultString);
+        printf("Chyba najdena v riadku %d. Ocakavanych 5 kol vo formate r1;r2;r3;r4;r5 . Namiesto toho vyslo \"%s\"\n",rowIndex, resultString);
         break;
     default:
         break;
@@ -51,7 +51,7 @@ int checkFileIntegrity(){
         fgets(row, MAXCHAR, fr);
         rowIndex ++;
         if(feof(fr) != 0 && rowIndex == 1 && strlen(row) == 0){
-            printf("\nData file is empty! Exiting function!\n");
+            printf("\nSubor je prazdny! Ukoncujem funkciu!\n");
             return 0;
         }
         rowSegment = strtok(row,";");
@@ -110,13 +110,13 @@ int checkFileIntegrity(){
         }
 
         if(segmentCount == 1){
-            printf("Found error in row %d. Empty line detected!\n", rowIndex);
+            printf("Chyba najdena v riadku %d. Najdeny prazdny riadok!\n", rowIndex);
             integrityStatus = 0;
             continue;
         }
         if(roundsCount != 5){
             integrityStatus = 0;
-            sprintf(helper, "%d rounds.", roundsCount);
+            sprintf(helper, "%d kol.", roundsCount);
             getSegmentError(segmentIndex, rowIndex, helper);
         }
     }
@@ -149,7 +149,7 @@ void sum(){
             if(segmentHelperIndex == 4){
                 printf(" Automobil: %s\nCasy okruhov: ", segment);
             }
-            if(segmentHelperIndex > 4 && segmentHelperIndex < 0){
+            if(segmentHelperIndex > 4 && segmentHelperIndex < 9){
                 printf("%.3f;", (float)atof(segment));
             }
             if(segmentHelperIndex == 9){
@@ -207,7 +207,7 @@ void rmdriver(){
         }
         found = found ? 0 : found;
     }
-    if(!globalFound) printf("No driver found with name %s", name);
+    if(!globalFound) printf("Nebol najdeny jazdec s priezviskom %s", name);
    
     if(fclose(fr) == EOF) printf("Subor sa nepodarilo zatvorit\n");
     if(fclose(fh) == EOF) printf("Subor sa nepodarilo zatvorit\n");
@@ -384,7 +384,7 @@ void driver(){
         }
         if(found) break;
     }
-    if(!found) printf("No driver found with name %s", name);
+    if(!found) printf("Nebol najdeny jazdec s priezviskom %s", name);
 
     if(fclose(fr) == EOF) printf("Subor sa nepodarilo zatvorit\n");
 }
@@ -394,7 +394,7 @@ void under(){
     if((fr = fopen("tabulka.csv", "r")) == NULL) printf("subor sa neotvoril\n");
     char row[MAXCHAR];
     char *segment;
-    float roundLimit;
+    float roundLimit = 0.0;
     char name[64];
     int roundIndexes[5];
     int tempRoundIndex;
@@ -403,7 +403,7 @@ void under(){
     float currentRound = 0.0;
     printf("Zadaj cas kola vo formate CC.CCC : ");
 
-    if(!scanf(" %.3f", &roundLimit) && roundLimit <= 0.0){
+    if(!scanf(" %f", &roundLimit) && roundLimit <= 0.0){
         printf("Zadany neplatny cas, alebo zly format! Ukoncujem funkciu!");
         return;
     }
@@ -434,7 +434,10 @@ void under(){
             printf("\n");
         }
     }
-    if(fclose(fr) == EOF) printf("Subor sa nepodarilo zatvorit\n");
+    if(!underRounds[0]){
+        printf("Nebol najdeny ziadny jazdec s casom pod %.3f sekund\n",roundLimit);
+    }
+    if(fclose(fr) == EOF) printf("Subor sa nepodarilo zatvorit");
 }
 
 void average(){
@@ -538,25 +541,34 @@ void newdriver(){
     char helper[64];
     char name[64];
     char brand[64];
+    char gender[32];
     int year;
-    int gender;
+    
     char *roundsToken;
     int index = 0;
     float rounds[5];
     char temp[16];
-    printf("Enter Driver Name: ");
+    printf("Zadaj cele meno jazdca: ");
     scanf(" %[^\n]", name);
-    printf("Enter year of birth: ");
+    printf("Zadaj rok narodenia: ");
     scanf("%d", &year);
-    printf("Enter gender (0 - male, 1 - female): ");
-    scanf("%d", &gender);
-    printf("Enter Car Brand (ferrari, porsche, bugatti, honda): ");
+    printf("Zadaj pohlavie (m - muz; f - zena): ");
+    scanf("%s", gender);
+    printf("Zadaj znacku vozidla (ferrari, porsche, bugatti, honda): ");
     scanf("%s", brand);
-    printf("Enter rounds (format: round1;round2;round3): ");
+    printf("Zadaj casy kol (format: round1;round2;round3;round4;round5): ");
     scanf("%s", helper);
 
     if(strcmp("bugatti",brand) && strcmp("ferrari",brand) && strcmp("honda",brand) && strcmp("porsche",brand)){
-        printf("No valid brand! Driver addition failed! Exiting function");
+        printf("Nebola zadana spravna znacka! Ukoncujem funkciu!");
+        return;
+    }
+
+    if(strlen(gender) > 1){
+        printf("Do pohlavia bolo zadanych viacero znakov, beriem len prvy znak!\n");
+    }
+    if((char)gender[0] != 'm' && (char)gender[0] != 'f'){
+        printf("Neplatne pohlavie. Ukoncujem funkciu!");
         return;
     }
 
@@ -564,7 +576,7 @@ void newdriver(){
     // Checking for rounds count
     for(int i = 0; i < 64; i++){
         if(helper[i] == 44){ 
-            printf("Found a typo in the rounds. You wrote , instead of ;! Don't worry, I fixed %s\'s rounds for you.\n", name);
+            printf("Najdena chyba pri nacitanych casoch. Napísal si , namiesto ;! Opravený cas kol jazdca %s\n", name);
             helper[i] = ';';
         }
         if(helper[i] == 59) semicolonCount += 1;
@@ -578,9 +590,9 @@ void newdriver(){
             roundsToken = strtok(NULL, ";");
             index++;
         }
-        fprintf(fw, "\n%s;%c;%d;%s;%.3f;%.3f;%.3f;%.3f;%.3f",name, !gender ? 'm' : 'f', year, brand, rounds[0],rounds[1],rounds[2],rounds[3],rounds[4]);
+        fprintf(fw, "\n%s;%c;%d;%s;%.3f;%.3f;%.3f;%.3f;%.3f",name, gender[0], year, brand, rounds[0],rounds[1],rounds[2],rounds[3],rounds[4]);
     } else {
-        printf("Not Enough rounds written. Exiting function!");
+        printf("Nedostatok kol! Ukoncujem funkciu!");
         return;
     }
     
@@ -664,10 +676,14 @@ void change(){
         }
         found = found ? 0 : found;
     }
-    if(!globalFound) printf("No driver found with name %s", name);
    
     if(fclose(fr) == EOF) printf("Subor sa nepodarilo zatvorit\n");
     if(fclose(fh) == EOF) printf("Subor sa nepodarilo zatvorit\n");
+
+    if(!globalFound){
+        printf("Nebol najdeny jazdec s priezviskom %s", name);
+        return;
+    }
     
     if((fr = fopen("tabulka.csv", "w")) == NULL) printf("subor sa neotvoril\n");
     if((fh = fopen("helper.csv","r")) == NULL) printf("subor sa neotvoril\n");
@@ -680,9 +696,9 @@ void change(){
         }
         fprintf(fr,"%s",row);
     }
-  
     if(fclose(fr) == EOF) printf("Subor sa nepodarilo zatvorit\n");
     if(fclose(fh) == EOF) printf("Subor sa nepodarilo zatvorit\n");
+    sum();
 }
 
 void year(){
@@ -746,7 +762,7 @@ void year(){
         }
     }
     if(bestYear) printf("\n%s\nnar. %d\nNajlepsie kolo: %.3f\nCislo kola: %d",bestName,bestYear,bestRound,bestRoundNum);
-    else printf("No one found!\n");
+    else printf("Nebol najdeny ziadny jazdec!\n");
 
     if(fclose(fr) == EOF) printf("Subor sa nepodarilo zatvorit\n");
 }
