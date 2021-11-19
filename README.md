@@ -11,11 +11,11 @@
 Toto je preprocesorova direktíva, ktorá compileru povie, aby všetky miesta, kde sa daný názov nachádza zmenil za číslo. V tomto prípade všade kde je MAXCHAR zmení na 256, čo je maximálny limit pri načítavaní riadku. Tento limit by mal vždy pokryť každý riadok
 
 `
-segment = strtok(row, ";,");<br />
-while(segment != NULL){<br />
-    ...code;<br />
-    segment = strtok(NULL,"+,");<br />
-}
+segment = strtok(row, ";,");  
+while(segment != NULL){  
+    ...code;  
+    segment = strtok(NULL,"+,");  
+}  
 `
 Funkcia `strtok()` bola nájdená v dokumentácií knižnice `<string.h>` na stránke [TutorialsPoint](https://www.tutorialspoint.com/c_standard_library/c_function_strtok.htm)
 Táto funkcia rozdelí string, v tomto prípade riadok, na časti cez delimitere (2. parameter funkcie). `NULL` sa zadáva preto, aby v tomto rozdeľovaní pokračoval, až kým sa nedostane na koniec riadka, kedy vráti NULL a cyklus sa uzavrie
