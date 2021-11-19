@@ -37,7 +37,7 @@ strcpy(DESTINATION,ORIGIN);
 >Funkcia `strcpy()` bola nájdená v dokumentácií knižnice `<string.h>` na stránke [TutorialsPoint](https://www.tutorialspoint.com/c_standard_library/c_function_strcpy.htm).\
 Táto funkcia skopíruje string z ORIGINU do DESTINATION, a vráti daný string
 
-## Zoznam funkcií
+## Pomocný opis niektorých funkcií
 
 ### Pomocné funkcie
 `int checkIntegrity()`
