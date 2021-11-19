@@ -28,13 +28,13 @@ if(strstr(last+1, name)){
     ...code;
 }
 ```
->Funkcia `strrchr()` bola nájdená v dokumentácií knižnice `<string.h>` na stránke [TutorialsPoint](https://www.tutorialspoint.com/c_standard_library/c_function_strtok.htm).\
+>Funkcia `strrchr()` bola nájdená v dokumentácií knižnice `<string.h>` na stránke [TutorialsPoint](https://www.tutorialspoint.com/c_standard_library/c_function_strrchr.htm).\
 Táto funkcia nájde pozíciu posledného výskytu 2. parametru, v tomto prípade 32 (ASCII tabuľka - medzera), a po pričítaní 1 sa vráti string priezviska, ktorý je ďalej použitý pri porovnávaní so vstupným priezviskom
 
 `
 strcpy(DESTINATION,ORIGIN);
 `
->Funkcia `strcpy()` bola nájdená v dokumentácií knižnice `<string.h>` na stránke [TutorialsPoint](https://www.tutorialspoint.com/c_standard_library/c_function_strtok.htm).\
+>Funkcia `strcpy()` bola nájdená v dokumentácií knižnice `<string.h>` na stránke [TutorialsPoint](https://www.tutorialspoint.com/c_standard_library/c_function_strcpy.htm).\
 Táto funkcia skopíruje string z ORIGINU do DESTINATION, a vráti daný string
 
 ## Zoznam funkcií
